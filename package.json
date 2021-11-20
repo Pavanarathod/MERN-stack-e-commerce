@@ -1,0 +1,22 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "MERN Shopping cart",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pavanarathod/MERN-stack-e-commerce.git"
+  },
+  "author": "Pavan Rathod",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pavanarathod/MERN-stack-e-commerce/issues"
+  },
+  "homepage": "https://github.com/Pavanarathod/MERN-stack-e-commerce#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

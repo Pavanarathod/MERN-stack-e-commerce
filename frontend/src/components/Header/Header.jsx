@@ -3,11 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
-  const gotoSomething = (routeName, home) => {
-    if (routeName) {
-      navigate(`/${routeName}`);
-    }
-    navigate(home);
+  const gotoSomething = (routeName) => {
+    navigate(routeName);
+  };
+
+  const hompage = () => {
+    navigate("/");
   };
 
   return (
@@ -20,21 +21,18 @@ const Header = () => {
         sticky="top"
       >
         <Container>
-          <Navbar.Brand
-            className="brand"
-            onClick={() => gotoSomething(undefined, "/")}
-          >
+          <Navbar.Brand className="brand" onClick={hompage}>
             Proshop
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              <Nav.Link onClick={() => gotoSomething("cart")}>
+              <Nav.Link onClick={() => gotoSomething("/cart")}>
                 <i className="fas fa-shopping-cart"></i>Cart
               </Nav.Link>
 
-              <Nav.Link onClick={() => gotoSomething("login")}>
+              <Nav.Link onClick={() => gotoSomething("/login")}>
                 <i className="fas fa-user"></i> Sign in
               </Nav.Link>
             </Nav>

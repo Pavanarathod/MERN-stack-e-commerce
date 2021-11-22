@@ -1,14 +1,23 @@
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { userLogout } from "../../core/actions/authActions/userAction";
 
 const Header = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const gotoSomething = (routeName) => {
     navigate(routeName);
   };
 
   const hompage = () => {
     navigate("/");
+  };
+
+  const logout = () => {
+    dispatch(userLogout());
   };
 
   return (
@@ -32,9 +41,18 @@ const Header = () => {
                 <i className="fas fa-shopping-cart"></i>Cart
               </Nav.Link>
 
-              <Nav.Link onClick={() => gotoSomething("/login")}>
-                <i className="fas fa-user"></i> Sign in
-              </Nav.Link>
+              {userInfo ? (
+                <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+                  <NavDropdown.Item onClick={() => gotoSomething("/profile")}>
+                    Profile
+                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <Nav.Link onClick={() => gotoSomething("/login")}>
+                  <i className="fas fa-user"></i> Sign in
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -44,19 +62,3 @@ const Header = () => {
 };
 
 export default Header;
-
-// {
-//   /* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-// <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-// <NavDropdown.Item href="#action/3.2">
-//   Another action
-// </NavDropdown.Item>
-// <NavDropdown.Item href="#action/3.3">
-//   Something
-// </NavDropdown.Item>
-// <NavDropdown.Divider />
-// <NavDropdown.Item href="#action/3.4">
-//   Separated link
-// </NavDropdown.Item>
-// </NavDropdown> */
-// }

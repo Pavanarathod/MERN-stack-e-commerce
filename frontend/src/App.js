@@ -2,10 +2,12 @@ import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import Homepage from "./pages/Homepage";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
+import Loginpage from "./pages/Loginpage";
+import RegisterPage from "./pages/Registerpage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -17,6 +19,9 @@ function App() {
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/cart/:id" element={<CartPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/login" element={<Loginpage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/" element={<Homepage />} />
           </Routes>
         </Container>

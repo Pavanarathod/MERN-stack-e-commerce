@@ -1,7 +1,10 @@
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { addToCart } from "../core/actions/cartAction/cartAction";
+import {
+  addToCart,
+  remooveFromCart,
+} from "../core/actions/cartAction/cartAction";
 import {
   Row,
   Col,
@@ -27,7 +30,10 @@ const CartPage = () => {
     }
   }, [id, dispatch, qty]);
 
-  const remooItem = (product_id) => {};
+  const remooItem = (product_id) => {
+    dispatch(remooveFromCart(product_id));
+    console.log(product_id);
+  };
 
   return (
     <Row>

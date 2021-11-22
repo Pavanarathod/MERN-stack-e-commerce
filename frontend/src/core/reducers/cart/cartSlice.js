@@ -20,7 +20,11 @@ const cartSlice = createSlice({
         state.cartItems = [...state.cartItems, item];
       }
     },
-    remooItem(state, action) {},
+    remooItem(state, action) {
+      state.cartItems = state.cartItems.filter(
+        (x) => x.product !== action.payload
+      );
+    },
   },
 });
 

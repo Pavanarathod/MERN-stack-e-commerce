@@ -18,6 +18,10 @@ strong:hover {
   cursor: pointer;
 }
 
+a {
+  text-decoration: none;
+}
+
 .brand:hover {
   cursor: pointer;
 }

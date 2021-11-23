@@ -16,10 +16,16 @@ const Loginpage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const redirect = location.search ? location.search.split("=")[1] : "/";
+  console.log(redirect);
+  console.log(location);
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect);
+      if (redirect === "shipping") {
+        navigate("/shipping");
+      } else {
+        navigate(redirect);
+      }
     }
   }, [userInfo, navigate, redirect]);
 

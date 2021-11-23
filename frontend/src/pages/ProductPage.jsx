@@ -20,7 +20,7 @@ const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const { products, loading, error } = useSelector((state) => state.product);
 

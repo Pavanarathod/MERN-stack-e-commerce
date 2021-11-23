@@ -24,4 +24,8 @@ const remooveFromCart = (id) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
-export { addToCart, remooveFromCart };
+const saveShippingAddress = (shippingData) => async (dispatch) => {
+  localStorage.setItem("shippingAddress", JSON.stringify(shippingData));
+};
+
+export { addToCart, remooveFromCart, saveShippingAddress };

@@ -21,6 +21,7 @@ const CartPage = () => {
   const { id } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const qty = location.search ? location.search.split("=")[1] : 1;
   const { cartItems } = useSelector((state) => state.cart);
 
@@ -33,6 +34,10 @@ const CartPage = () => {
   const remooItem = (product_id) => {
     dispatch(remooveFromCart(product_id));
     console.log(product_id);
+  };
+
+  const checkOutHandler = () => {
+    navigate("/login?redirect=shipping");
   };
 
   return (
@@ -105,6 +110,7 @@ const CartPage = () => {
                 type="button"
                 className="btn-block"
                 disabled={cartItems.length === 0}
+                onClick={checkOutHandler}
               >
                 Proceed To Checkout
               </Button>

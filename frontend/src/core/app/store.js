@@ -6,6 +6,7 @@ import userLoginSlice from "../reducers/authReducer/loginSlice";
 import userRegisterSlice from "../reducers/authReducer/registerSlice";
 import userDetailSlice from "../reducers/authReducer/userDetailSlice";
 import userUpdateSlice from "../reducers/authReducer/userUpdateSlice";
+import saveShippingSlice from "../reducers/cart/saveShippingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     userRegister: userRegisterSlice,
     userDetail: userDetailSlice,
     userUpdate: userUpdateSlice,
+    shippingAddress: saveShippingSlice,
   },
 });

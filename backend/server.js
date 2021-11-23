@@ -4,6 +4,7 @@ dotenv.config();
 import connectDB from "./database/mongoose.js";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 import colors from "colors";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 connectDB();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use("/api/products", productRoutes);
 app.use("/api/users", authRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

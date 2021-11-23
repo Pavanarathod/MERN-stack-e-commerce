@@ -1,25 +1,27 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import {
   Button,
   Card,
   Col,
-  Form,
   Image,
   ListGroup,
   ListGroupItem,
   Row,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps/CheckoutSteps";
-import FormContainer from "../components/FormContainer/FormContainer";
 import Message from "../components/Message/Message";
-import { saveShippingAddress } from "../core/actions/cartAction/cartAction";
+import { createOrderAction } from "../core/actions/orderActions/orderActions";
 
 const PlaceorderPage = () => {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = useSelector((state) => state.shippingAddress);
   const { paymentDetail } = useSelector((state) => state.paymentDetails);
+  const { orders, loading, error, success } = useSelector(
+    (state) => state.orderCreate
+  );
   const navigate = useNavigate();
 
   const itemsPrice = cart.cartItems.reduce(
@@ -41,8 +43,31 @@ const PlaceorderPage = () => {
     navigate(`/products/${url}`);
   };
 
+  useEffect(() => {
+    if (success) {
+      navigate(`/orders/${orders.createdOrder._id}`);
+    }
+    // eslint-disable-next-line
+  }, [navigate, success]);
+
+  const createOrder = () => {
+    dispatch(
+      createOrderAction({
+        orderItems: cart.cartItems,
+        shippingAddress: shippingAddress,
+        paymentMethod: paymentDetail.paymentMethod,
+        itemsPrice: itemsPrice,
+        shippingPrice: shippingPrice,
+        taxPrice: taxPrice,
+        totalPrice: total,
+      })
+    );
+  };
+
   return (
     <>
+      {error && <Message variant="danger">{error}</Message>}
+      {success && <Message>Successfylly create order</Message>}
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
@@ -131,9 +156,10 @@ const PlaceorderPage = () => {
               <Button
                 type="button"
                 className="btn-block"
+                onClick={createOrder}
                 disabled={cart.cartItems.length === 0}
               >
-                Placeorder
+                Create Order
               </Button>
             </ListGroupItem>
           </Card>

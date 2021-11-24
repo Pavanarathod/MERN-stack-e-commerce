@@ -44,8 +44,12 @@ const PlaceorderPage = () => {
   };
 
   useEffect(() => {
-    if (success) {
-      navigate(`/orders/${orders.createdOrder._id}`);
+    // if (success) {
+    //   navigate(`/orders/${orders.createdOrder._id}`);
+    // }
+    const someId = "619d041c8dfdb826225a19c2";
+    if (true) {
+      navigate(`/orders/${someId}`);
     }
     // eslint-disable-next-line
   }, [navigate, success]);

@@ -63,6 +63,8 @@ const ProfilePage = () => {
     }
   };
 
+  console.log(user);
+
   return (
     <>
       {loading && <Loader />}

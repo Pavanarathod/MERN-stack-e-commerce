@@ -58,7 +58,7 @@ const Header = () => {
                   <NavDropdown.Item
                     onClick={() => gotoSomething("/admin/userlist")}
                   >
-                    Profile
+                    User List
                   </NavDropdown.Item>
                   <NavDropdown.Item
                     onClick={() => gotoSomething("/admin/productlist")}

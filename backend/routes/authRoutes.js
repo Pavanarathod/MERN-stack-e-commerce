@@ -3,9 +3,11 @@ import {
   authUser,
   deleteUser,
   getAllUserData,
+  getUserById,
   getuserProfile,
   registerNewUser,
   updateUserProfile,
+  updateUser,
 } from "../controllers/authControllers.js";
 import authMiddleware, { adminUser } from "../middleware/authMiddleware.js";
 const router = express.Router();
@@ -15,11 +17,17 @@ router
   .post(registerNewUser)
   .get(authMiddleware, adminUser, getAllUserData);
 
-router.route("/:id").delete(authMiddleware, adminUser, deleteUser);
 router.post("/login", authUser);
+
 router
   .route("/profile")
   .get(authMiddleware, getuserProfile)
   .put(authMiddleware, updateUserProfile);
+
+router
+  .route("/:id")
+  .get(authMiddleware, adminUser, getUserById)
+  .put(authMiddleware, adminUser, updateUser)
+  .delete(authMiddleware, adminUser, deleteUser);
 
 export default router;

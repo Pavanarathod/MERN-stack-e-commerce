@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,11 +10,17 @@ import {
 } from "../core/actions/authActions/userAction";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { getUserOrdersAction } from "../core/actions/orderActions/orderActions";
 
 const ProfilePage = () => {
   const { user, loading, error } = useSelector((state) => state.userDetail);
   const { userInfo } = useSelector((state) => state.userLogin);
   const { success } = useSelector((state) => state.userUpdate);
+  const {
+    userOrders,
+    loading: orderLoading,
+    error: orderError,
+  } = useSelector((state) => state.userOrders);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,6 +42,10 @@ const ProfilePage = () => {
       }
     }
   }, [userInfo, navigate, dispatch, user.email, user.name]);
+
+  useEffect(() => {
+    dispatch(getUserOrdersAction());
+  }, [dispatch]);
 
   const updateUserData = (e) => {
     e.preventDefault();

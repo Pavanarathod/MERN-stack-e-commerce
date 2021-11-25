@@ -1,9 +1,14 @@
+// @ts-nocheck
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getOrdersAction } from "../core/actions/orderActions/orderActions";
+import {
+  getOrdersAction,
+  orderPayAction,
+} from "../core/actions/orderActions/orderActions";
 import Loader from "../components/Loader/Loader";
 import Message from "../components/Message/Message";
+import { PayPalButton } from "react-paypal-button-v2";
 import {
   Button,
   Card,
@@ -13,6 +18,7 @@ import {
   ListGroupItem,
   Row,
 } from "react-bootstrap";
+import { orderPayActions } from "../core/reducers/orderReducer/orderPaySlice";
 
 const OrdersPage = () => {
   const { orderId } = useParams();
@@ -22,12 +28,30 @@ const OrdersPage = () => {
     (state) => state.orderDetails
   );
 
+  const { success: paySuccess, loading: payLoading } = useSelector(
+    (state) => state.orderPay
+  );
+
   useEffect(() => {
-    dispatch(getOrdersAction(orderId));
-  }, [orderId, dispatch]);
+    if (!orderDetails.orderDetails || paySuccess) {
+      dispatch(orderPayActions.setReset());
+      dispatch(getOrdersAction(orderId));
+    }
+  }, [orderId, dispatch, orderDetails.orderDetails, paySuccess]);
 
   const goToProduct = (url) => {
     navigate(`/products/${url}`);
+  };
+
+  const payOrder = () => {
+    dispatch(
+      orderPayAction(orderId, {
+        id: "somerandomid",
+        status: "paymentcomplete",
+        update_time: "sometimeing",
+        email_address: "pavan@gmail.com",
+      })
+    );
   };
 
   return (
@@ -45,19 +69,19 @@ const OrdersPage = () => {
                 <ListGroupItem>
                   <h2>Shipping</h2>
                   <strong>Name: </strong>
-                  {orderDetails.user.name}
+                  {orderDetails.user?.name}
                   <div>
                     <strong>Email: </strong>
-                    <a href={`mailto:${orderDetails.user.email}`}>
-                      {orderDetails.user.email}
+                    <a href={`mailto:${orderDetails.user?.email}`}>
+                      {orderDetails.user?.email}
                     </a>
                   </div>
                   <p>
                     <strong>Address: </strong>
-                    {orderDetails.shippingAddress.address},{" "}
-                    {orderDetails.shippingAddress.city},{" "}
-                    {orderDetails.shippingAddress.postalCode},{" "}
-                    {orderDetails.shippingAddress.country}
+                    {orderDetails.shippingAddress?.address},{" "}
+                    {orderDetails.shippingAddress?.city},{" "}
+                    {orderDetails.shippingAddress?.postalCode},{" "}
+                    {orderDetails.shippingAddress?.country}
                   </p>
                   {orderDetails.isDeliverd ? (
                     <Message variant="success">
@@ -75,7 +99,7 @@ const OrdersPage = () => {
                   </p>
                   {orderDetails.isPaid ? (
                     <Message variant="success">
-                      Paid on {orderDetails.paidOn}
+                      Paid on {orderDetails.paidAt}
                     </Message>
                   ) : (
                     <Message variant="danger">Not Paid</Message>
@@ -151,11 +175,27 @@ const OrdersPage = () => {
                     </Row>
                   </ListGroupItem>
                 </ListGroup>
-                <ListGroupItem>
-                  <Button type="button" className="btn-block">
-                    Create Order
-                  </Button>
-                </ListGroupItem>
+
+                {!orderDetails.isPaid && (
+                  <>
+                    {payLoading ? (
+                      <Loader />
+                    ) : (
+                      <>
+                        <Button
+                          className="btn-block btn-primary my-2"
+                          onClick={payOrder}
+                        >
+                          Pay order
+                        </Button>
+                        <PayPalButton
+                          amount={orderDetails.totalPrice}
+                          onSuccess={payOrder}
+                        />
+                      </>
+                    )}
+                  </>
+                )}
               </Card>
             </Col>
           </Row>

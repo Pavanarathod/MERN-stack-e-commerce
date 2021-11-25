@@ -10,6 +10,8 @@ import saveShippingSlice from "../reducers/cart/saveShippingSlice";
 import paymentSlice from "../reducers/cart/paymentSlice";
 import orderSlice from "../reducers/orderReducer/orderSlice";
 import orderDetailSlice from "../reducers/orderReducer/orderDetailSlice";
+import orderPaySlice from "../reducers/orderReducer/orderPaySlice";
+import userOrdersSlice from "../reducers/authReducer/userOrdersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,9 +22,11 @@ export const store = configureStore({
     userRegister: userRegisterSlice,
     userDetail: userDetailSlice,
     userUpdate: userUpdateSlice,
+    userOrders: userOrdersSlice,
     shippingAddress: saveShippingSlice,
     paymentDetails: paymentSlice,
     orderCreate: orderSlice,
     orderDetails: orderDetailSlice,
+    orderPay: orderPaySlice,
   },
 });

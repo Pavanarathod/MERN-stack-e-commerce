@@ -1,7 +1,9 @@
 import axios from "axios";
 import { loginAciton } from "../../reducers/authReducer/loginSlice";
 import { registerActions } from "../../reducers/authReducer/registerSlice";
+import { userDeleteAction } from "../../reducers/authReducer/userDeleteSlice";
 import { userDetailActions } from "../../reducers/authReducer/userDetailSlice";
+import { userListActions } from "../../reducers/authReducer/userListSlice";
 import { userUpdateActions } from "../../reducers/authReducer/userUpdateSlice";
 
 export const login = (email, password) => async (dispatch) => {
@@ -117,6 +119,61 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch(
       userUpdateActions.setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      )
+    );
+  }
+};
+
+export const usersListAction = () => async (dispatch, getState) => {
+  try {
+    dispatch(userListActions.setLoading());
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get("/api/users", config);
+    dispatch(userListActions.setUserLists(data));
+  } catch (error) {
+    dispatch(
+      userListActions.setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      )
+    );
+  }
+};
+
+export const deleteUserAction = (userId) => async (dispatch, getState) => {
+  try {
+    dispatch(userDeleteAction.setLoading());
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await axios.delete(`/api/users/${userId}`, config);
+    dispatch(userDeleteAction.setSuccess());
+  } catch (error) {
+    dispatch(
+      userDeleteAction.setError(
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message

@@ -12,6 +12,8 @@ import orderSlice from "../reducers/orderReducer/orderSlice";
 import orderDetailSlice from "../reducers/orderReducer/orderDetailSlice";
 import orderPaySlice from "../reducers/orderReducer/orderPaySlice";
 import userOrdersSlice from "../reducers/authReducer/userOrdersSlice";
+import userListSlice from "../reducers/authReducer/userListSlice";
+import deleteUserSlice from "../reducers/authReducer/userDeleteSlice";
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +25,8 @@ export const store = configureStore({
     userDetail: userDetailSlice,
     userUpdate: userUpdateSlice,
     userOrders: userOrdersSlice,
+    userLists: userListSlice,
+    userDelete: deleteUserSlice,
     shippingAddress: saveShippingSlice,
     paymentDetails: paymentSlice,
     orderCreate: orderSlice,

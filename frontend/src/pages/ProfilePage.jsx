@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../components/Loader/Loader";
 import Message from "../components/Message/Message";
@@ -8,7 +8,7 @@ import {
   getUseDetailAction,
   updateUserProfile,
 } from "../core/actions/authActions/userAction";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getUserOrdersAction } from "../core/actions/orderActions/orderActions";
 
@@ -115,7 +115,61 @@ const ProfilePage = () => {
           </Form>
         </Col>
         <Col md={9}>
-          <h2>My Orders</h2>
+          {orderLoading ? (
+            <Loader />
+          ) : orderError ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
+            <>
+              {userOrders?.length === 0 ? (
+                <h1>You have no orders?</h1>
+              ) : (
+                <>
+                  <h2>My Orders</h2>
+                  <Table striped bordered hover responsive className="table-sm">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>DATE</th>
+                        <th>TOTAL</th>
+                        <th>PAID</th>
+                        <th>DELIVERD</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {userOrders?.map((order) => (
+                        <tr key={order._id}>
+                          <td>{order._id}</td>
+                          <td>{order.createdAt.substring(0, 10)}</td>
+                          <td>$ {order.totalPrice}</td>
+                          <td>
+                            {order.isPaid ? (
+                              order.paidAt.substring(0, 10)
+                            ) : (
+                              <p style={{ color: "red" }}>Not Paid</p>
+                            )}
+                          </td>
+                          <td>
+                            {order.isDelivered ? (
+                              order.deliveredAt.substring(0, 10)
+                            ) : (
+                              <p style={{ color: "red" }}>not delivered</p>
+                            )}
+                          </td>
+                          <td>
+                            <Link to={`/orders/${order._id}`}>
+                              <Button variant="light">Details</Button>
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </>
+              )}
+            </>
+          )}
         </Col>
       </Row>
     </>

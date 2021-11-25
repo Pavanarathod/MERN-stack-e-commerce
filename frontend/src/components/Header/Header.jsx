@@ -53,6 +53,25 @@ const Header = () => {
                   <i className="fas fa-user"></i> Sign in
                 </Nav.Link>
               )}
+              {userInfo?.isAdmin && (
+                <NavDropdown title="Admin" id="basic-nav-dropdown">
+                  <NavDropdown.Item
+                    onClick={() => gotoSomething("/admin/userlist")}
+                  >
+                    Profile
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={() => gotoSomething("/admin/productlist")}
+                  >
+                    Product List
+                  </NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={() => gotoSomething("/admin/orderlist")}
+                  >
+                    Order List
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -16,12 +16,14 @@ import userListSlice from "../reducers/authReducer/userListSlice";
 import deleteUserSlice from "../reducers/authReducer/userDeleteSlice";
 import userDetailUpdateSlice from "../reducers/authReducer/userDetailUpdateSlice";
 import productDeleteSlice from "../reducers/productReducer/productDeleteSlice";
+import productReviewsSlice from "../reducers/productReducer/productReviewsSlice";
 
 export const store = configureStore({
   reducer: {
     products: productSlice,
     product: productDetailSlice,
     productDelete: productDeleteSlice,
+    productReviews: productReviewsSlice,
     cart: cartSlice,
     userLogin: userLoginSlice,
     userRegister: userRegisterSlice,

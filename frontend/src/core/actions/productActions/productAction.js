@@ -1,6 +1,7 @@
 import axios from "axios";
 import { productDeleteActions } from "../../reducers/productReducer/productDeleteSlice";
 import { productDetailActions } from "../../reducers/productReducer/productDetailSlice";
+import { productReviewsActions } from "../../reducers/productReducer/productReviewsSlice";
 import { productActions } from "../../reducers/productReducer/productSlice";
 
 const getAllProducts = () => async (dispatch) => {
@@ -66,4 +67,36 @@ const deleteProductAction = (id) => async (dispatch, getState) => {
   }
 };
 
-export { getAllProducts, getProdcutDetail, deleteProductAction };
+const getProductReviewActions = (id, review) => async (dispatch, getState) => {
+  try {
+    dispatch(productReviewsActions.setLoading());
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await axios.post(`/api/products/${id}/reviews`, review, config);
+    dispatch(productReviewsActions.setProductReviews());
+  } catch (error) {
+    dispatch(
+      productReviewsActions.setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      )
+    );
+  }
+};
+
+export {
+  getAllProducts,
+  getProdcutDetail,
+  deleteProductAction,
+  getProductReviewActions,
+};

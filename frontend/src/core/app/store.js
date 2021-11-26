@@ -14,11 +14,14 @@ import orderPaySlice from "../reducers/orderReducer/orderPaySlice";
 import userOrdersSlice from "../reducers/authReducer/userOrdersSlice";
 import userListSlice from "../reducers/authReducer/userListSlice";
 import deleteUserSlice from "../reducers/authReducer/userDeleteSlice";
+import userDetailUpdateSlice from "../reducers/authReducer/userDetailUpdateSlice";
+import productDeleteSlice from "../reducers/productReducer/productDeleteSlice";
 
 export const store = configureStore({
   reducer: {
     products: productSlice,
     product: productDetailSlice,
+    productDelete: productDeleteSlice,
     cart: cartSlice,
     userLogin: userLoginSlice,
     userRegister: userRegisterSlice,
@@ -27,6 +30,7 @@ export const store = configureStore({
     userOrders: userOrdersSlice,
     userLists: userListSlice,
     userDelete: deleteUserSlice,
+    userDetailUpdate: userDetailUpdateSlice,
     shippingAddress: saveShippingSlice,
     paymentDetails: paymentSlice,
     orderCreate: orderSlice,

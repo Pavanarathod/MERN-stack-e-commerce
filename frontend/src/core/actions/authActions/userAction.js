@@ -3,6 +3,7 @@ import { loginAciton } from "../../reducers/authReducer/loginSlice";
 import { registerActions } from "../../reducers/authReducer/registerSlice";
 import { userDeleteAction } from "../../reducers/authReducer/userDeleteSlice";
 import { userDetailActions } from "../../reducers/authReducer/userDetailSlice";
+import { userDetailUpdateSliceActions } from "../../reducers/authReducer/userDetailUpdateSlice";
 import { userListActions } from "../../reducers/authReducer/userListSlice";
 import { userUpdateActions } from "../../reducers/authReducer/userUpdateSlice";
 
@@ -174,6 +175,34 @@ export const deleteUserAction = (userId) => async (dispatch, getState) => {
   } catch (error) {
     dispatch(
       userDeleteAction.setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      )
+    );
+  }
+};
+
+export const updateDetailUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch(userDetailUpdateSliceActions.onLoding());
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+    dispatch(userDetailUpdateSliceActions.onSuccess());
+    dispatch(userDetailActions.setUser(data));
+  } catch (error) {
+    dispatch(
+      userDetailUpdateSliceActions.onError(
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message

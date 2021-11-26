@@ -14,6 +14,7 @@ import PlaceorderPage from "./pages/PlaceorderPage";
 import OrdersPage from "./pages/OrdersPage";
 import UserList from "./pages/UserList";
 import UserEditPage from "./pages/UserEditPage";
+import ProductListPage from "./pages/ProductListPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/placeorder" element={<PlaceorderPage />} />
             <Route path="/orders/:orderId" element={<OrdersPage />} />
             <Route path="/admin/userlist" element={<UserList />} />
+            <Route path="/admin/productlist" element={<ProductListPage />} />
             <Route path="/admin/user/:id/edit" element={<UserEditPage />} />
             <Route path="/" element={<Homepage />} />
           </Routes>

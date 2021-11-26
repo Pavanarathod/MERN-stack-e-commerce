@@ -1,4 +1,5 @@
 import axios from "axios";
+import { productDeleteActions } from "../../reducers/productReducer/productDeleteSlice";
 import { productDetailActions } from "../../reducers/productReducer/productDetailSlice";
 import { productActions } from "../../reducers/productReducer/productSlice";
 
@@ -36,4 +37,33 @@ const getProdcutDetail = (id) => async (dispatch) => {
   }
 };
 
-export { getAllProducts, getProdcutDetail };
+const deleteProductAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch(productDeleteActions.setLoading());
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/products/${id}`, config);
+
+    dispatch(productDeleteActions.setProducts());
+  } catch (error) {
+    dispatch(
+      productDeleteActions.setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      )
+    );
+  }
+};
+
+export { getAllProducts, getProdcutDetail, deleteProductAction };

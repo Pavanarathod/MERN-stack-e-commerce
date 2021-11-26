@@ -1,26 +1,36 @@
-import { useState } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import FormContainer from "../components/FormContainer/FormContainer";
 import Loader from "../components/Loader/Loader";
 import Message from "../components/Message/Message";
-import { getUseDetailAction } from "../core/actions/authActions/userAction";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import {
+  getUseDetailAction,
+  updateDetailUser,
+} from "../core/actions/authActions/userAction";
+import { userDetailUpdateSliceActions } from "../core/reducers/authReducer/userDetailUpdateSlice";
 
 const UserEditPage = () => {
   const { id } = useParams();
   const { user, loading, error } = useSelector((state) => state.userDetail);
+  const {
+    userDetailUpdateSuccess,
+    loading: udateLoading,
+    error: updateError,
+  } = useSelector((state) => state.userDetailUpdate);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-  const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
+    if (userDetailUpdateSuccess) {
+      dispatch(userDetailUpdateSliceActions.onReset());
+      navigate("/admin/userlist");
+    }
     if (!user.name || user._id !== id) {
       dispatch(getUseDetailAction(id));
     } else {
@@ -28,10 +38,27 @@ const UserEditPage = () => {
       setEmail(user.email);
       setIsAdmin(user.isAdmin);
     }
-  }, [user.name, user._id, id, dispatch, user.isAdmin, user.email]);
+  }, [
+    user.name,
+    user._id,
+    id,
+    dispatch,
+    user.isAdmin,
+    user.email,
+    userDetailUpdateSuccess,
+    navigate,
+  ]);
 
   const registerSubmitHandler = (e) => {
     e.preventDefault();
+    dispatch(
+      updateDetailUser({
+        _id: user._id,
+        name,
+        email,
+        isAdmin,
+      })
+    );
   };
 
   return (
@@ -39,6 +66,8 @@ const UserEditPage = () => {
       <Link to="/admin/userlist" className="btn btn-light py-3">
         Go Back
       </Link>
+      {udateLoading && <Loader />}
+      {updateError && <Message variant="danger">{updateError}</Message>}
 
       <FormContainer>
         <h1>Edit User</h1>

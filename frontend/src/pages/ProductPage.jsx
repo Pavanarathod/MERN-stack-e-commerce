@@ -21,6 +21,8 @@ import {
 import Loader from "../components/Loader/Loader";
 import Message from "../components/Message/Message";
 import { productReviewsActions } from "../core/reducers/productReducer/productReviewsSlice";
+import { Helmet } from "react-helmet";
+import ReactHelmet from "../components/ReactHelmet/ReactHelmet";
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -67,6 +69,7 @@ const ProductPage = () => {
 
   return (
     <>
+      <ReactHelmet titleName={products?.name} />
       {loading ? (
         <Loader />
       ) : error ? (

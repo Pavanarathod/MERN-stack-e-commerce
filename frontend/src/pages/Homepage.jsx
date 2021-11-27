@@ -6,30 +6,49 @@ import { getAllProducts } from "../core/actions/productActions/productAction";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader/Loader";
 import Message from "../components/Message/Message";
+import { useParams } from "react-router-dom";
+import Paginate from "../components/Paginate/Paginate";
+import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
+import { Helmet } from "react-helmet";
+import ReactHelmet from "../components/ReactHelmet/ReactHelmet";
 
 const Homepage = () => {
+  const { keyword } = useParams();
+  const { pageNumber } = useParams();
+
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.products);
 
   useEffect(() => {
-    dispatch(getAllProducts());
-  }, [dispatch]);
+    dispatch(getAllProducts(keyword, pageNumber));
+  }, [dispatch, keyword, pageNumber]);
+
+  console.log(products);
 
   return (
     <>
+      <ReactHelmet titleName="Welcome to proshop | Home" />
+      {!keyword && <ProductCarousel />}
       <h1>Latest products</h1>
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          {products?.map((product) => (
-            <Col key={product._id} sm={12} lg={4} xl={3}>
-              <Product product={product} />
-            </Col>
-          ))}
-        </Row>
+        <>
+          <Row>
+            {products?.product?.map((product) => (
+              <Col key={product._id} sm={12} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+          <Paginate
+            pages={products?.pages}
+            page={products?.page}
+            keyword={keyword ? keyword : ""}
+          />
+        </>
       )}
     </>
   );

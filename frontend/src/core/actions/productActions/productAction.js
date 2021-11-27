@@ -3,23 +3,28 @@ import { productDeleteActions } from "../../reducers/productReducer/productDelet
 import { productDetailActions } from "../../reducers/productReducer/productDetailSlice";
 import { productReviewsActions } from "../../reducers/productReducer/productReviewsSlice";
 import { productActions } from "../../reducers/productReducer/productSlice";
+import { getTopProductsAction } from "../../reducers/productReducer/productTopSlice";
 
-const getAllProducts = () => async (dispatch) => {
-  try {
-    dispatch(productActions.setLoading());
+const getAllProducts =
+  (keyword = "", pageNumber = "") =>
+  async (dispatch) => {
+    try {
+      dispatch(productActions.setLoading());
 
-    const { data } = await axios.get("/api/products");
-    dispatch(productActions.setProducts(data));
-  } catch (error) {
-    dispatch(
-      productActions.setError(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      )
-    );
-  }
-};
+      const { data } = await axios.get(
+        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+      );
+      dispatch(productActions.setProducts(data));
+    } catch (error) {
+      dispatch(
+        productActions.setError(
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+        )
+      );
+    }
+  };
 
 const getProdcutDetail = (id) => async (dispatch) => {
   try {
@@ -94,9 +99,27 @@ const getProductReviewActions = (id, review) => async (dispatch, getState) => {
   }
 };
 
+const getToppProductsAction = () => async (dispatch) => {
+  try {
+    dispatch(getTopProductsAction.setLoading());
+
+    const { data } = await axios.get("/api/products/top");
+    dispatch(getTopProductsAction.setProducts(data));
+  } catch (error) {
+    dispatch(
+      getTopProductsAction.setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      )
+    );
+  }
+};
+
 export {
   getAllProducts,
   getProdcutDetail,
   deleteProductAction,
   getProductReviewActions,
+  getToppProductsAction,
 };

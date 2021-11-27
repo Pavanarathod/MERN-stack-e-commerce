@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 const connectDB = async () => {
   try {
-    const mongo = await mongoose.connect("mongodb://127.0.0.1:27017/proshop");
+    const mongo = await mongoose.connect(process.env.MONGO__URL);
 
     console.log(`MonogoDB Connected ${mongo.connection.host}`.cyan.underline);
   } catch (error) {

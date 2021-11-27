@@ -36,6 +36,8 @@ function App() {
             <Route path="/admin/userlist" element={<UserList />} />
             <Route path="/admin/productlist" element={<ProductListPage />} />
             <Route path="/admin/user/:id/edit" element={<UserEditPage />} />
+            <Route path="/search/:keyword" element={<Homepage />} />
+            <Route path="/page/:pageNumber" element={<Homepage />} />
             <Route path="/" element={<Homepage />} />
           </Routes>
         </Container>

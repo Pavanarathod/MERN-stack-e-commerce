@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import dotenv from "dotenv";
 import morgan from "morgan";
 dotenv.config();
@@ -19,6 +20,16 @@ app.use(express.json());
 app.use("/api/products", productRoutes);
 app.use("/api/users", authRoutes);
 app.use("/api/orders", orderRoutes);
+
+const __dirname = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  );
+}
 
 app.use(notFound);
 app.use(errorHandler);

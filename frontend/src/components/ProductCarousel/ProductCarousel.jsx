@@ -13,7 +13,6 @@ const ProductCarousel = () => {
     (state) => state.productsTop
   );
 
-  console.log(topProducts);
   useEffect(() => {
     dispatch(getToppProductsAction());
   }, [dispatch]);

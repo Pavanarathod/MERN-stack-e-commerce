@@ -35,19 +35,19 @@ const ProductPage = () => {
   const { products, loading, error } = useSelector((state) => state.product);
   const { userInfo } = useSelector((state) => state.userLogin);
   const {
-    productReviews,
+    productReviewsSuccess,
     loading: reviewLoading,
     error: reviewError,
   } = useSelector((state) => state.productReviews);
 
   useEffect(() => {
-    if (productReviews) {
+    if (productReviewsSuccess) {
       setRating(0);
       setComment("");
-      dispatch(productReviewsActions.setReset());
+      // dispatch(productReviewsActions.setReset());
     }
     dispatch(getProdcutDetail(id));
-  }, [id, dispatch, productReviews]);
+  }, [id, dispatch, productReviewsSuccess]);
 
   const addToCart = () => {
     navigate(`/cart/${id}?qty=${qty}`);

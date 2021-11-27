@@ -7,6 +7,7 @@ const productReviewsSlice = createSlice({
     loading: false,
     error: false,
   },
+
   reducers: {
     setProductReviews(state) {
       state.productReviewsSuccess = true;

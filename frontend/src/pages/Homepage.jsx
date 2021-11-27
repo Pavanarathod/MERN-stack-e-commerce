@@ -9,7 +9,7 @@ import Message from "../components/Message/Message";
 import { useParams } from "react-router-dom";
 import Paginate from "../components/Paginate/Paginate";
 import ProductCarousel from "../components/ProductCarousel/ProductCarousel";
-import { Helmet } from "react-helmet";
+
 import ReactHelmet from "../components/ReactHelmet/ReactHelmet";
 
 const Homepage = () => {
@@ -22,8 +22,6 @@ const Homepage = () => {
   useEffect(() => {
     dispatch(getAllProducts(keyword, pageNumber));
   }, [dispatch, keyword, pageNumber]);
-
-  console.log(products);
 
   return (
     <>
